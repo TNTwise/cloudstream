@@ -17,20 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Generate access token
-      id: generate_token
-      uses: tibdex/github-app-token@v1
-      with:
-        app_id: sync
-        private_key: ${{ secrets.GH_APP_KEY }}
-        repository: "recloudstream/secrets"
-    - name: Generate access token (archive)
-      id: generate_archive_token
-      uses: tibdex/github-app-token@v1
-      with:
-        app_id: sync
-        private_key: ${{ secrets.GH_APP_KEY }}
-        repository: "recloudstream/cloudstream-archive"
+    
     - uses: actions/checkout@v2
     - name: Set up JDK 17
       uses: actions/setup-java@v2
@@ -52,12 +39,7 @@ jobs:
     - name: Run Gradle
       run: |
         ./gradlew assemblePrerelease
-      env:
-        SIGNING_KEY_ALIAS: "key0"
-        SIGNING_KEY_PASSWORD: ${{ steps.fetch_keystore.outputs.key_pwd }}
-        SIGNING_STORE_PASSWORD: ${{ steps.fetch_keystore.outputs.key_pwd }}
-        SIMKL_CLIENT_ID: ${{ secrets.SIMKL_CLIENT_ID }}
-        SIMKL_CLIENT_SECRET: ${{ secrets.SIMKL_CLIENT_SECRET }}
+      
     - uses: actions/checkout@v3
       with:
         repository: "recloudstream/cloudstream-archive"
